@@ -16,4 +16,9 @@ public class Complex {
     public double getImaginary(){
         return imaginary;
     }
+
+    @Override
+    public String toString(){
+        return String.format("%s%s", real, imaginary == 0 ? "" : imaginary > 0 ? "+" + imaginary:imaginary);
+    }
 }
