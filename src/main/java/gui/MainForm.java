@@ -149,7 +149,7 @@ public class MainForm implements Initializable {
     private Double precision;
 
     private static final String realNumberRegEx = "^-?\\d+(\\.\\d+)?$";
-    private static final String complexNumberRegEx = "^(-?\\d+(\\.\\d+)?)([+-](%\\d+(\\.\\d+)?)i)?";
+    private static final String complexNumberRegEx = "^(-?\\d+(\\.\\d+)?)([+-](\\d+(\\.\\d+)?)?)i";
     private static final Pattern complexNumberPattern = Pattern.compile(complexNumberRegEx);
 
     private void checkCalculateButton(){
@@ -158,6 +158,7 @@ public class MainForm implements Initializable {
 
     private void listenToNumberTextField(ObservableValue<? extends String> observable, String oldValue, String newValue){
         String trimmedNewValue = newValue.trim();
+        number = null;
         if (!trimmedNewValue.isEmpty())
         {
             if (trimmedNewValue.matches(realNumberRegEx)){
@@ -168,36 +169,34 @@ public class MainForm implements Initializable {
                     try {
                         number = new BigDecimal(trimmedNewValue);
                     }
-                    catch (NumberFormatException bigDecimalException){
-                        number = null;
+                    catch (NumberFormatException ignored){
                     }
                 }
             }
             else{
-                Matcher matcher = complexNumberPattern.matcher(complexNumberRegEx);
+                Matcher matcher = complexNumberPattern.matcher(trimmedNewValue);
                 if (matcher.find()){
                     try{
                         double real = Double.parseDouble(matcher.group(1));
-                        double imaginary = Double.parseDouble(matcher.group(4));
+                        double imaginary = 1;
+                        if (!matcher.group(3).equals("+") && !matcher.group(3).equals("-"))
+                            imaginary = Double.parseDouble(matcher.group(3));
                         number = new Complex(real, imaginary);
                     }
-                    catch (NumberFormatException doubleException){
-                        number = null;
+                    catch (NumberFormatException ignored){
                     }
                 }
             }
-            return;
         }
         checkCalculateButton();
     }
 
     private void listenToPrecisionTextField(ObservableValue<? extends String> observable, String oldValue, String newValue){
         String trimmedNewValue = newValue.trim();
+        precision = null;
         if (!trimmedNewValue.isEmpty()){
-            if (trimmedNewValue.matches(realNumberRegEx)){
+            if (trimmedNewValue.matches(realNumberRegEx))
                 precision = Double.parseDouble(trimmedNewValue);
-            }
-            else precision = null;
         }
         checkCalculateButton();
     }
