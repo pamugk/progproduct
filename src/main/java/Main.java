@@ -33,22 +33,7 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
 
-        form.setSqrtSolver(new SqrtSolverInterface() { //Это временная заглушка
-            @Override
-            public double calculateArithmeticalRoot(double number, double degree, double precision) throws RootException {
-                return 0;
-            }
-
-            @Override
-            public List<Complex> calculateRootOfComplexNumber(Complex number, double degree, double precision) throws RootException {
-                return null;
-            }
-
-            @Override
-            public BigDecimal calculateRootOfLongNumber(BigDecimal number, double degree, double precision) throws RootException {
-                return null;
-            }
-        });
+        form.setSqrtSolver(new SqrtSolver());
     }
 
     private void updateLocalization(Locale locale){

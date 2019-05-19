@@ -6,7 +6,7 @@ import java.util.List;
 
 public class SqrtSolver implements SqrtSolverInterface {
     @Override
-    public double calculateArithmeticalRoot(double number, double degree, double precision) throws RootException {
+    public double calculateArithmeticalRoot(double number, double precision) throws RootException {
         if (number < 0.0)
             throw new RootException();
         if (number == 0.0)
@@ -15,9 +15,9 @@ public class SqrtSolver implements SqrtSolverInterface {
     }
 
     @Override
-    public List<Complex> calculateRootOfComplexNumber(Complex number, double degree, double precision) throws RootException {
+    public List<Complex> calculateRootOfComplexNumber(Complex number, double precision) throws RootException {
         if (Complex.abs(number) == 0.0){
-            List<Complex> result = new ArrayList<Complex>();
+            List<Complex> result = new ArrayList<>();
             result.add(new Complex(0,0));
             result.add(new Complex(0,0));
             return result;
@@ -26,7 +26,7 @@ public class SqrtSolver implements SqrtSolverInterface {
     }
 
     @Override
-    public BigDecimal calculateRootOfLongNumber(BigDecimal number, double degree, double precision) throws RootException {
+    public BigDecimal calculateRootOfLongNumber(BigDecimal number, double precision) throws RootException {
         if (number.compareTo(BigDecimal.ZERO) < 0)
             throw new RootException();
         if (number.compareTo(BigDecimal.ZERO) == 0)
