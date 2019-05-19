@@ -196,8 +196,11 @@ public class MainForm implements Initializable {
         String trimmedNewValue = newValue.trim();
         precision = null;
         if (!trimmedNewValue.isEmpty()){
-            if (trimmedNewValue.matches(realNumberRegEx))
+            if (trimmedNewValue.matches(realNumberRegEx)){
                 precision = Double.parseDouble(trimmedNewValue);
+                if (precision <= 0)
+                    precision = null;
+            }
         }
         checkCalculateButton();
     }
