@@ -8,19 +8,15 @@ package gui;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Locale;
-import java.util.Observable;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import common.Complex;
 import common.RootException;
 import common.SqrtSolverInterface;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -31,12 +27,6 @@ import javafx.scene.control.*;
  * @author Admin
  */
 public class MainForm implements Initializable {
-
-    /**
-     * Initializes the controller class.
-     * @param url
-     * @param rb
-     */
     private URL location;
     private ResourceBundle resources;
     
@@ -45,78 +35,117 @@ public class MainForm implements Initializable {
 
     //<editor-fold defaultstate="collapsed" desc="Раздел локализации в меню">
     @FXML
-    private RadioMenuItem ruLocalisationItem;
+    private Menu localisationMenu;
 
     @FXML
     private RadioMenuItem enLocalisationItem;
 
     @FXML
-    private RadioMenuItem plLocalisationItem;
-
-    @FXML
-    private RadioMenuItem zhLocalisationItem;
-
-    @FXML
-    private RadioMenuItem ptLocalisationItem;
-
-    @FXML
-    private RadioMenuItem hiLocalisationItem;
+    private RadioMenuItem esLocalisationItem;
 
     @FXML
     private RadioMenuItem frLocalisationItem;
 
     @FXML
-    private RadioMenuItem esLocalisationItem;
+    private RadioMenuItem hiLocalisationItem;
+
+    @FXML
+    private RadioMenuItem plLocalisationItem;
+
+    @FXML
+    private RadioMenuItem ptLocalisationItem;
+
+    @FXML
+    private RadioMenuItem ruLocalisationItem;
+
+    @FXML
+    private RadioMenuItem zhLocalisationItem;
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Раздел помощи в меню">
     @FXML
-    private MenuItem helpItem;
+    private Menu helpMenu;
+
+    @FXML
+    private MenuItem referenceItem;
 
     @FXML
     private MenuItem aboutItem;
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Раздел ввода-вывода в форме">
     @FXML
+    private TitledPane inputPane;
+
+    @FXML
     private Button calculateRootBtn;
+
+    @FXML
+    private Label numberLabel;
 
     @FXML
     private TextField numberTextField;
 
     @FXML
-    private TextField degreeTextField;
+    private Label precisionLabel;
 
     @FXML
     private TextField precisionTextField;
 
     @FXML
+    private TitledPane resultPane;
+
+    @FXML
     private TextField resultTextField;
     //</editor-fold>
 
+    /**
+     * Initializes the controller class.
+     * @param url
+     * @param rb
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         location = url;
         resources = rb;
 
+        ToggleGroup localizationGroup = new ToggleGroup();
+        localizationGroup.getToggles().addAll(enLocalisationItem, esLocalisationItem, frLocalisationItem,
+                hiLocalisationItem, plLocalisationItem, ptLocalisationItem, ruLocalisationItem, zhLocalisationItem);
+
         ruLocalisationItem.setSelected(true);
         numberTextField.textProperty().addListener(this::listenToNumberTextField);
-        degreeTextField.textProperty().addListener(this::listenToDegreeTextField);
         precisionTextField.textProperty().addListener(this::listenToPrecisionTextField);
 
+    }
+
+    public void setLocalisation(ResourceBundle localisation){
+        resources = localisation;
+
+        localisationMenu.setText(resources.getString("language"));
+        helpMenu.setText(resources.getString("help"));
+        referenceItem.setText(resources.getString("reference"));
+        aboutItem.setText(resources.getString("about"));
+
+        inputPane.setText(resources.getString("input"));
+        numberLabel.setText(resources.getString("number"));
+        precisionLabel.setText(resources.getString("precision"));
+        calculateRootBtn.setText(resources.getString("calculateRoot"));
+
+        resultPane.setText(resources.getString("result"));
     }
 
     public void setSqrtSolver(SqrtSolverInterface solver){
         this.sqrtSolver = solver;
     }
 
-    private void changeLocalisation(Locale locale){
-
+    private Consumer<Locale> translator;
+    public void setLocalizer(Consumer<Locale> translator){
+        this.translator = translator;
     }
 
     private SqrtSolverInterface sqrtSolver;
 
     //<editor-fold defaultstate="collapsed" desc="Обработчики изменения содержимого текстовых полей">
     private Object number;
-    private Double degree;
     private Double precision;
 
     private static final String realNumberRegEx = "^-?\\d+(\\.\\d+)?$";
@@ -124,7 +153,7 @@ public class MainForm implements Initializable {
     private static final Pattern complexNumberPattern = Pattern.compile(complexNumberRegEx);
 
     private void checkCalculateButton(){
-        calculateRootBtn.setDisable(number == null || degree == null || precision == null);
+        calculateRootBtn.setDisable(number == null || precision == null);
     }
 
     private void listenToNumberTextField(ObservableValue<? extends String> observable, String oldValue, String newValue){
@@ -143,7 +172,6 @@ public class MainForm implements Initializable {
                         number = null;
                     }
                 }
-                calculateRootBtn.setDisable(degree == null || precision == null);
             }
             else{
                 Matcher matcher = complexNumberPattern.matcher(complexNumberRegEx);
@@ -163,17 +191,6 @@ public class MainForm implements Initializable {
         checkCalculateButton();
     }
 
-    private void listenToDegreeTextField(ObservableValue<? extends String> observable, String oldValue, String newValue){
-        String trimmedNewValue = newValue.trim();
-        if (!trimmedNewValue.isEmpty()){
-            if (trimmedNewValue.matches(realNumberRegEx)){
-                degree = Double.parseDouble(trimmedNewValue);
-            }
-            else degree = null;
-        }
-        checkCalculateButton();
-    }
-
     private void listenToPrecisionTextField(ObservableValue<? extends String> observable, String oldValue, String newValue){
         String trimmedNewValue = newValue.trim();
         if (!trimmedNewValue.isEmpty()){
@@ -188,15 +205,15 @@ public class MainForm implements Initializable {
 
     @FXML
     private void showHelpMessage(){
-        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Тут будет справка");
-        alert.setHeaderText("Справка");
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, resources.getString("referenceText"));
+        alert.setHeaderText(resources.getString("reference"));
         alert.show();
     }
 
     @FXML
     private void showAboutMessage(){
-        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Это пре-альфа-бета версия программы для вычисления корней чисел, используйте на свой страх и риск");
-        alert.setHeaderText("О программе");
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, resources.getString("aboutText"));
+        alert.setHeaderText(resources.getString("about"));
         alert.show();
     }
 
@@ -205,33 +222,70 @@ public class MainForm implements Initializable {
         StringBuilder resultingMessage = new StringBuilder();
         try{
             if (number instanceof Double){
-                resultingMessage.append(sqrtSolver.calculateArithmeticalRoot((Double)number, degree, precision));
+                resultingMessage.append(sqrtSolver.calculateArithmeticalRoot((Double)number, precision));
             }
             else{
                 if (number instanceof Complex){
-                    sqrtSolver.calculateRootOfComplexNumber((Complex)number, degree, precision)
+                    sqrtSolver.calculateRootOfComplexNumber((Complex)number, precision)
                             .forEach(num -> resultingMessage.append(String.format("%s\n", num)));
                 }
                 else{
-                    resultingMessage.append(sqrtSolver.calculateRootOfLongNumber((BigDecimal)number, degree, precision));
+                    resultingMessage.append(sqrtSolver.calculateRootOfLongNumber((BigDecimal)number, precision));
                 }
             }
         } catch (RootException e) {
-            resultingMessage.append("К сожалению, во время вычисления корня по заданным данным произошла ошибка.\n");
-            resultingMessage.append("Пожалуйста, перепроверьте введенные данные");
+            resultingMessage.append(String.format("%s\n", resources.getString("error1")));
+            resultingMessage.append(resources.getString("error2"));
         }
         resultTextField.setText(resultingMessage.toString());
     }
 
+    //<editor-fold defaultstate="collapsed" desc="Обработчики для смены локализации">
     @FXML
-    private void onRuLocalisationRadioItemChanged(){
-        enLocalisationItem.setSelected(!ruLocalisationItem.isSelected());
-        changeLocalisation(new Locale("ru"));
+    private void onEnLocalisationRadioItemChanged(){
+        assert translator != null;
+        translator.accept(new Locale("en", "EN"));
     }
 
     @FXML
-    private void onEnLocalisationRadioItemChanged(){
-        ruLocalisationItem.setSelected(!enLocalisationItem.isSelected());
-        changeLocalisation(new Locale("en"));
+    private void onEsLocalisationRadioItemChanged(){
+        assert translator != null;
+        translator.accept(new Locale("es", "ES"));
     }
+
+    @FXML
+    private void onFrLocalisationRadioItemChanged(){
+        assert translator != null;
+        translator.accept(new Locale("fr", "FR"));
+    }
+
+    @FXML
+    private void onHiLocalisationRadioItemChanged(){
+        assert translator != null;
+        translator.accept(new Locale("hi", "IN"));
+    }
+
+    @FXML
+    private void onPlLocalisationRadioItemChanged(){
+        assert translator != null;
+        translator.accept(new Locale("pl", "PL"));
+    }
+
+    @FXML
+    private void onPtLocalisationRadioItemChanged(){
+        assert translator != null;
+        translator.accept(new Locale("ru", "RU"));
+    }
+
+    @FXML
+    private void onRuLocalisationRadioItemChanged(){
+        assert translator != null;
+        translator.accept(new Locale("ru", "RU"));
+    }
+
+    @FXML
+    private void onZhLocalisationRadioItemChanged(){
+        assert translator != null;
+        translator.accept(new Locale("zh", "CN"));
+    }//</editor-fold>
 }
