@@ -64,8 +64,8 @@ public class SqrtSolver implements SqrtSolverInterface {
      */
     private static List<Complex> sqrt(Complex number, double precision) throws RootException {
         List<Complex> result = new ArrayList<>();
-        result.add(new Complex(0,0));
-        result.add(new Complex(0,0));
+        result.add(number);
+        result.add(number);
         int iterations = 0;
         while (Complex.abs(result.get(0).multiply(result.get(0))) - Complex.abs(number) > precision && iterations != 50000) {
             double c = Math.sqrt((number.getReal() + Complex.abs(number)) / 2);

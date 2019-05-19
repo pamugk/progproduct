@@ -80,6 +80,6 @@ public class Complex {
 
     @Override
     public String toString(){
-        return String.format("%s%s", real, imaginary == 0 ? "" : imaginary > 0 ? "+" + imaginary:imaginary);
+        return String.format("%s%si", real, imaginary == 0 ? "" : imaginary > 0 ? "+" + imaginary:imaginary);
     }
 }
