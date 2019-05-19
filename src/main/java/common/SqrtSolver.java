@@ -1,5 +1,7 @@
 package common;
 
+import javafx.scene.control.Alert;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -69,12 +71,14 @@ public class SqrtSolver implements SqrtSolverInterface {
             double c = Math.sqrt((number.getReal() + Complex.abs(number)) / 2);
             double d = Math.signum(number.getImaginary()) * Math.sqrt((-number.getReal() + Complex.abs(number)) / 2);
             result.set(0, new Complex(c,d));
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "c = " + c + "\nd = " + d);
             iterations++;
         }
         while (Complex.abs(result.get(1).multiply(result.get(1))) - Complex.abs(number) > precision && iterations != 50000) {
             double c = Math.sqrt((number.getReal() + Complex.abs(number)) / 2);
             double d = Math.signum(number.getImaginary()) * Math.sqrt((-number.getReal() + Complex.abs(number)) / 2);
             result.set(1, new Complex(-c,-d));
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "c = " + c + "\nd = " + d);
             iterations++;
         }
         if (iterations == 100000)
