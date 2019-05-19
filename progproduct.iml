@@ -11,5 +11,10 @@
     </content>
     <orderEntry type="jdk" jdkName="1.8" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Maven: org.jetbrains:annotations:16.0.2" level="project" />
+    <orderEntry type="library" name="Maven: org.jetbrains.kotlin:kotlin-compiler:1.2.31" level="project" />
+    <orderEntry type="library" name="Maven: org.jetbrains.kotlin:kotlin-stdlib:1.2.31" level="project" />
+    <orderEntry type="library" name="Maven: org.jetbrains.kotlin:kotlin-script-runtime:1.2.31" level="project" />
+    <orderEntry type="library" name="Maven: org.jetbrains.kotlin:kotlin-reflect:1.2.31" level="project" />
   </component>
 </module>

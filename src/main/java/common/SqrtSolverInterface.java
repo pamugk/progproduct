@@ -22,7 +22,7 @@ public interface SqrtSolverInterface {
     double calculateArithmeticalRoot(double number, double degree, double precision) throws RootException;
 
     /**
-     * Метод calculateRootOfComplexNumbe</code> служит для вычисления корней от комплексных чисел
+     * Метод calculateRootOfComplexNumber служит для вычисления корней от комплексных чисел
      *
      * @param number Комплексное число, корни от которого необходимо вычислить
      * @param degree Степень корня
