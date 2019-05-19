@@ -95,7 +95,7 @@ public class MainForm implements Initializable {
     private TitledPane resultPane;
 
     @FXML
-    private TextField resultTextField;
+    private TextArea resultTextArea;
     //</editor-fold>
 
     /**
@@ -115,7 +115,6 @@ public class MainForm implements Initializable {
         ruLocalisationItem.setSelected(true);
         numberTextField.textProperty().addListener(this::listenToNumberTextField);
         precisionTextField.textProperty().addListener(this::listenToPrecisionTextField);
-
     }
 
     public void setLocalisation(ResourceBundle localisation){
@@ -240,7 +239,7 @@ public class MainForm implements Initializable {
             resultingMessage.append(String.format("%s\n", resources.getString("error1")));
             resultingMessage.append(resources.getString("error2"));
         }
-        resultTextField.setText(resultingMessage.toString());
+        resultTextArea.setText(resultingMessage.toString());
     }
 
     //<editor-fold defaultstate="collapsed" desc="Обработчики для смены локализации">
