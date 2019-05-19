@@ -14,77 +14,73 @@
 <?import javafx.scene.text.Font?>
 
 
-<AnchorPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MainForm">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MainForm">
    <children>
-      <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
-         <children>
-            <MenuBar fx:id="mainBar">
-               <menus>
-                  <Menu fx:id="localisationMenu" mnemonicParsing="false" text="\%language">
-                     <items>
-                        <RadioMenuItem fx:id="enLocalisationItem" mnemonicParsing="false" onAction="#onEnLocalisationRadioItemChanged" text="English" />
-                        <RadioMenuItem fx:id="esLocalisationItem" mnemonicParsing="false" onAction="#onEsLocalisationRadioItemChanged" text="Español" />
-                        <RadioMenuItem fx:id="frLocalisationItem" mnemonicParsing="false" onAction="#onFrLocalisationRadioItemChanged" text="Français" />
-                        <RadioMenuItem fx:id="hiLocalisationItem" mnemonicParsing="false" onAction="#onHiLocalisationRadioItemChanged" text="हिन्दी" />
-                        <RadioMenuItem fx:id="plLocalisationItem" mnemonicParsing="false" onAction="#onPlLocalisationRadioItemChanged" text="Polski" />
-                        <RadioMenuItem fx:id="ptLocalisationItem" mnemonicParsing="false" onAction="#onPtLocalisationRadioItemChanged" text="Português" />
-                        <RadioMenuItem fx:id="ruLocalisationItem" mnemonicParsing="false" onAction="#onRuLocalisationRadioItemChanged" text="Русский" />
-                        <RadioMenuItem fx:id="zhLocalisationItem" mnemonicParsing="false" onAction="#onZhLocalisationRadioItemChanged" text="中文" />
-                     </items>
-                  </Menu>
-                  <Menu fx:id="helpMenu" mnemonicParsing="false" text="\%help">
-                     <items>
-                        <MenuItem fx:id="referenceItem" mnemonicParsing="false" onAction="#showHelpMessage" text="\%reference" />
-                        <MenuItem fx:id="aboutItem" mnemonicParsing="false" onAction="#showAboutMessage" text="\%about" />
-                     </items>
-                  </Menu>
-               </menus>
-            </MenuBar>
-            <SplitPane dividerPositions="0.5" orientation="VERTICAL">
+      <MenuBar fx:id="mainBar">
+         <menus>
+            <Menu fx:id="localisationMenu" mnemonicParsing="false" text="\%language">
                <items>
-                  <TitledPane fx:id="inputPane" animated="false" text="\%input">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                     <content>
-                        <VBox alignment="CENTER">
-                           <children>
-                              <Label fx:id="numberLabel" alignment="CENTER" text="\%number" textAlignment="CENTER">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
-                              <TextField fx:id="numberTextField">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </TextField>
-                              <Label fx:id="precisionLabel" text="\%precision">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
-                              <TextField fx:id="precisionTextField" />
-                              <Button fx:id="calculateRootBtn" alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" onAction="#calculateRootBtn_onAction" text="\\%calculateRoot" />
-                           </children>
-                        </VBox>
-                     </content>
-                  </TitledPane>
-                  <TitledPane fx:id="resultPane" animated="false" text="\%result">
-                     <content>
-                        <AnchorPane>
-                           <children>
-                              <TextField fx:id="resultTextField" alignment="CENTER" editable="false" layoutX="40.0" layoutY="14.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-                           </children>
-                        </AnchorPane>
-                     </content>
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </TitledPane>
+                  <RadioMenuItem fx:id="enLocalisationItem" mnemonicParsing="false" onAction="#onEnLocalisationRadioItemChanged" text="English" />
+                  <RadioMenuItem fx:id="esLocalisationItem" mnemonicParsing="false" onAction="#onEsLocalisationRadioItemChanged" text="Español" />
+                  <RadioMenuItem fx:id="frLocalisationItem" mnemonicParsing="false" onAction="#onFrLocalisationRadioItemChanged" text="Français" />
+                  <RadioMenuItem fx:id="hiLocalisationItem" mnemonicParsing="false" onAction="#onHiLocalisationRadioItemChanged" text="हिन्दी" />
+                  <RadioMenuItem fx:id="plLocalisationItem" mnemonicParsing="false" onAction="#onPlLocalisationRadioItemChanged" text="Polski" />
+                  <RadioMenuItem fx:id="ptLocalisationItem" mnemonicParsing="false" onAction="#onPtLocalisationRadioItemChanged" text="Português" />
+                  <RadioMenuItem fx:id="ruLocalisationItem" mnemonicParsing="false" onAction="#onRuLocalisationRadioItemChanged" text="Русский" />
+                  <RadioMenuItem fx:id="zhLocalisationItem" mnemonicParsing="false" onAction="#onZhLocalisationRadioItemChanged" text="中文" />
                </items>
-            </SplitPane>
-         </children>
-      </VBox>
+            </Menu>
+            <Menu fx:id="helpMenu" mnemonicParsing="false" text="\%help">
+               <items>
+                  <MenuItem fx:id="referenceItem" mnemonicParsing="false" onAction="#showHelpMessage" text="\%reference" />
+                  <MenuItem fx:id="aboutItem" mnemonicParsing="false" onAction="#showAboutMessage" text="\%about" />
+               </items>
+            </Menu>
+         </menus>
+      </MenuBar>
+      <SplitPane dividerPositions="0.5" orientation="VERTICAL">
+         <items>
+            <TitledPane fx:id="inputPane" animated="false" text="\%input">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <content>
+                  <VBox alignment="CENTER">
+                     <children>
+                        <Label fx:id="numberLabel" alignment="CENTER" text="\%number" textAlignment="CENTER">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="numberTextField">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </TextField>
+                        <Label fx:id="precisionLabel" text="\%precision">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="precisionTextField" />
+                        <Button fx:id="calculateRootBtn" alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" onAction="#calculateRootBtn_onAction" text="\\%calculateRoot" />
+                     </children>
+                  </VBox>
+               </content>
+            </TitledPane>
+            <TitledPane fx:id="resultPane" animated="false" text="\%result">
+               <content>
+                  <AnchorPane>
+                     <children>
+                        <TextField fx:id="resultTextField" alignment="CENTER" editable="false" layoutX="40.0" layoutY="14.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                     </children>
+                  </AnchorPane>
+               </content>
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </TitledPane>
+         </items>
+      </SplitPane>
    </children>
-</AnchorPane>
+</VBox>

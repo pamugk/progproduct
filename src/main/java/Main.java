@@ -29,6 +29,7 @@ public class Main extends Application {
         form = loader.getController();
         primaryStage.setTitle(bundle.getString("title"));
         form.setLocalisation(bundle);
+        form.setLocalizer(this::updateLocalization);
         primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("graphics/sqrt.png")));
         primaryStage.setScene(new Scene(root));
         primaryStage.show();

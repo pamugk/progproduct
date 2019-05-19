@@ -274,7 +274,7 @@ public class MainForm implements Initializable {
     @FXML
     private void onPtLocalisationRadioItemChanged(){
         assert translator != null;
-        translator.accept(new Locale("ru", "RU"));
+        translator.accept(new Locale("pt", "PT"));
     }
 
     @FXML
